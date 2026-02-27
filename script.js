@@ -78,15 +78,17 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-const createUserName = function (user) {
-  const userName = user
-    .toLowerCase()
-    .split(' ')
-    .map(name => name[0])
-    .join('');
-  return userName;
+const createUserNames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
 };
-console.log(createUserName('Virat Kohli'));
+createUserNames(accounts);
+console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
