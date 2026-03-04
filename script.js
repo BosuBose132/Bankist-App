@@ -83,6 +83,14 @@ const calcPrintBalance = function (movements) {
   labelBalance.textContent = `${balance} EUR`;
 };
 
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes} EUR`;
+};
+calcDisplaySummary(account1.movements);
+
 const createUserNames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
