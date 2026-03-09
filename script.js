@@ -114,6 +114,21 @@ const createUserNames = function (accs) {
 createUserNames(accounts);
 console.log(accounts);
 
+// Event handler
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault(); //prevent form from submitting
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value,
+  );
+  console.log(currentAccount);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    console.log('Login successful');
+  }
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 //DEMO/PRACTICE/TESTER
