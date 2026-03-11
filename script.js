@@ -170,12 +170,12 @@ btnClose.addEventListener('click', function (e) {
     const index = accounts.findIndex(
       acc => acc.username === currentAccount.username,
     );
+    console.log(index);
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
   }
+  inputCloseUsername.value = inputClosePin.value = '';
 });
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-//DEMO/PRACTICE/TESTER
 
 // const currencies = new Map([
 //   ['USD', 'United States dollar'],
