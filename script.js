@@ -8,6 +8,16 @@
 const account1 = {
   owner: 'Bosu Bade',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movementsDates: [
+    '2026-03-01T10:17:24.185Z',
+    '2026-03-02T14:11:59.604Z',
+    '2026-03-03T17:01:17.194Z',
+    '2026-03-04T23:36:17.929Z',
+    '2026-03-05T10:51:36.790Z',
+    '2026-03-06T09:15:04.904Z',
+    '2026-03-07T14:48:46.867Z',
+    '2026-03-08T16:33:06.386Z',
+  ],
   interestRate: 1.2, // %
   pin: 1111,
 };
@@ -15,6 +25,17 @@ const account1 = {
 const account2 = {
   owner: 'Virat Kohli',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movementsDates: [
+    '2026-03-01T10:17:24.185Z',
+    '2026-03-02T14:11:59.604Z',
+    '2026-03-03T17:01:17.194Z',
+    '2026-03-04T23:36:17.929Z',
+    '2026-03-05T10:51:36.790Z',
+    '2026-03-06T09:15:04.904Z',
+    '2026-03-07T14:48:46.867Z',
+    '2026-03-08T16:33:06.386Z',
+  ],
+
   interestRate: 1.5,
   pin: 2222,
 };
@@ -22,6 +43,16 @@ const account2 = {
 const account3 = {
   owner: 'MS Dhoni',
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  movementsDates: [
+    '2026-03-01T10:17:24.185Z',
+    '2026-03-02T14:11:59.604Z',
+    '2026-03-03T17:01:17.194Z',
+    '2026-03-04T23:36:17.929Z',
+    '2026-03-05T10:51:36.790Z',
+    '2026-03-06T09:15:04.904Z',
+    '2026-03-07T14:48:46.867Z',
+    '2026-03-08T16:33:06.386Z',
+  ],
   interestRate: 0.7,
   pin: 3333,
 };
@@ -29,6 +60,16 @@ const account3 = {
 const account4 = {
   owner: 'Suresh Raina',
   movements: [430, 1000, 700, 50, 90],
+  movementsDates: [
+    '2026-03-01T10:17:24.185Z',
+    '2026-03-02T14:11:59.604Z',
+    '2026-03-03T17:01:17.194Z',
+    '2026-03-04T23:36:17.929Z',
+    '2026-03-05T10:51:36.790Z',
+    '2026-03-06T09:15:04.904Z',
+    '2026-03-07T14:48:46.867Z',
+    '2026-03-08T16:33:06.386Z',
+  ],
   interestRate: 1,
   pin: 4444,
 };
@@ -80,6 +121,7 @@ const displayMovements = function (acc, sort = false) {
           <div class="movements__type movements__type--${type}">
             ${i + 1} ${type}
           </div>
+            <div class="movements__date">${displayDate}</div>
           <div class="movements__value">${mov.toFixed(2)}</div>
         </div>
     `;
@@ -181,6 +223,10 @@ btnTransfer.addEventListener('click', function (e) {
     console.log('Transfer valid');
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
+    //add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     updateUi(currentAccount);
   }
 });
