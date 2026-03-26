@@ -125,6 +125,11 @@ const updateUi = function (acc) {
 // Event handler
 let currentAccount;
 
+//fake login
+currentAccount = account1;
+updateUi(currentAccount);
+containerApp.style.opacity = 100;
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); //prevent form from submitting
   currentAccount = accounts.find(
