@@ -125,11 +125,22 @@ const displayMovements = function (acc, sort = false) {
   combinedMovsDates.forEach(function (obj, i) {
     const { movement, movementDate } = obj;
     const type = movement > 0 ? 'deposit' : 'withdrawal';
-
-    const day = `${movementDate.getDate()}`.padStart(2, '0');
-    const month = `${movementDate.getMonth() + 1}`.padStart(2, '0');
-    const year = movementDate.getFullYear();
-    const displayDate = `${day}/${month}/${year}`;
+    const calcDaysPassed = (date1, date2) =>
+      Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+    const daysPassed = calcDaysPassed(new Date(), movementDate);
+    let displayDate;
+    if (daysPassed === 0) {
+      displayDate = 'Today';
+    } else if (daysPassed === 1) {
+      displayDate = 'Yesterday';
+    } else if (daysPassed <= 7) {
+      displayDate = `${daysPassed} days ago`;
+    } else {
+      const day = `${movementDate.getDate()}`.padStart(2, '0');
+      const month = `${movementDate.getMonth() + 1}`.padStart(2, '0');
+      const year = movementDate.getFullYear();
+      displayDate = `${day}/${month}/${year}`;
+    }
 
     const formattedMov = formatCur(movement, acc.locale, acc.currency);
 
