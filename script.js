@@ -211,18 +211,6 @@ currentAccount = account1;
 updateUi(currentAccount);
 containerApp.style.opacity = 100;
 
-//Experimenting API Internationalising
-const now = new Date();
-const options = {
-  hour: 'numeric',
-  minute: 'numeric',
-  day: 'numeric',
-  month: 'numeric',
-  year: 'numeric',
-  weekday: 'long',
-};
-labelDate.textContent = new Intl.DateTimeFormat('en-GB', options).format(now);
-
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); //prevent form from submitting
   currentAccount = accounts.find(
@@ -235,13 +223,27 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
 
+    //const now = new Date();
+    //Experimenting API Internationalising
     const now = new Date();
-    const day = `${now.getDate()}`.padStart(2, 0);
-    const month = `${now.getMonth() + 1}`.padStart(2, 0);
-    const year = `${now.getFullYear()}`;
-    const hour = `${now.getHours()}`.padStart(2, 0);
-    const min = `${now.getMinutes()}`.padStart(2, 0);
-    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+      //weekday: 'long',
+    };
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options,
+    ).format(now);
+    // const day = `${now.getDate()}`.padStart(2, 0);
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const year = `${now.getFullYear()}`;
+    // const hour = `${now.getHours()}`.padStart(2, 0);
+    // const min = `${now.getMinutes()}`.padStart(2, 0);
+    // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
 
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
