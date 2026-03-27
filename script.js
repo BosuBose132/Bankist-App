@@ -57,6 +57,8 @@ const account3 = {
     '2026-03-07T14:48:46.867Z',
     '2026-03-08T16:33:06.386Z',
   ],
+  locale: 'en-US',
+  currency: 'USD',
   interestRate: 0.7,
   pin: 3333,
 };
@@ -208,6 +210,18 @@ let currentAccount;
 currentAccount = account1;
 updateUi(currentAccount);
 containerApp.style.opacity = 100;
+
+//Experimenting API Internationalising
+const now = new Date();
+const options = {
+  hour: 'numeric',
+  minute: 'numeric',
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  weekday: 'long',
+};
+labelDate.textContent = new Intl.DateTimeFormat('en-GB', options).format(now);
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); //prevent form from submitting
