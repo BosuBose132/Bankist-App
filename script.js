@@ -20,6 +20,8 @@ const account1 = {
   ],
   interestRate: 1.2, // %
   pin: 1111,
+  locale: 'en-US',
+  currency: 'USD',
 };
 
 const account2 = {
@@ -38,6 +40,8 @@ const account2 = {
 
   interestRate: 1.5,
   pin: 2222,
+  locale: 'en-GB',
+  currency: 'GBP',
 };
 
 const account3 = {
@@ -72,6 +76,8 @@ const account4 = {
   ],
   interestRate: 1,
   pin: 4444,
+  locale: 'en-IN',
+  currency: 'INR',
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -102,29 +108,41 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
-  const movs = sort
-    ? acc.movements.slice().sort((a, b) => a - b)
-    : acc.movements;
+  const combinedMovsDates = acc.movements.map((mov, i) => ({
+    movement: mov,
+    movementDate: new Date(acc.movementsDates.at(i)),
+  }));
 
-  movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(acc.movementsDates[i]);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
+  combinedMovsDates.forEach(function (obj, i) {
+    const { movement, movementDate } = obj;
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
+
+    const day = `${movementDate.getDate()}`.padStart(2, '0');
+    const month = `${movementDate.getMonth() + 1}`.padStart(2, '0');
+    const year = movementDate.getFullYear();
     const displayDate = `${day}/${month}/${year}`;
 
+    const formattedMov = formatCur(movement, acc.locale, acc.currency);
+
     const html = `
-     <div class="movements__row">
-          <div class="movements__type movements__type--${type}">
-            ${i + 1} ${type}
-          </div>
-            <div class="movements__date">${displayDate}</div>
-          <div class="movements__value">${mov.toFixed(2)}</div>
-        </div>
-    `;
+    <div class="movements__row">
+      <div class="movements__type movements__type--${type}">
+        ${i + 1} ${type}
+      </div>
+      <div class="movements__date">${displayDate}</div>
+      <div class="movements__value">${formattedMov}</div>
+    </div>
+  `;
+
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
@@ -237,6 +255,7 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
     updateUi(currentAccount);
   }
   inputLoanAmount.value = '';
@@ -260,7 +279,7 @@ let sorted = false;
 
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
