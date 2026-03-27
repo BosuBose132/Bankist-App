@@ -123,7 +123,7 @@ const displayMovements = function (acc, sort = false) {
     movement: mov,
     movementDate: new Date(acc.movementsDates.at(i)),
   }));
-
+  if (sort) combinedMovsDates.sort((a, b) => b.movement - a.movement);
   combinedMovsDates.forEach(function (obj, i) {
     const { movement, movementDate } = obj;
     const type = movement > 0 ? 'deposit' : 'withdrawal';
