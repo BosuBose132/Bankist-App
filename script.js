@@ -208,20 +208,33 @@ const updateUi = function (acc) {
 };
 
 const startLogOutTimer = function () {
-  let time = 100;
-  setInterval(function () {
-    labelTimer.textContent = time;
+  const tick = function () {
+    const min = Math.trunc(time / 60)
+      .toString()
+      .padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+    }
     time--;
-  }, 1000);
+  };
+
+  let time = 120;
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
 };
 
 // Event handler
-let currentAccount;
+let currentAccount, timer;
 
-//fake login
-currentAccount = account1;
-updateUi(currentAccount);
-containerApp.style.opacity = 100;
+// //fake login
+// currentAccount = account1;
+// updateUi(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); //prevent form from submitting
@@ -259,6 +272,8 @@ btnLogin.addEventListener('click', function (e) {
 
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
     updateUi(currentAccount);
   }
 });
