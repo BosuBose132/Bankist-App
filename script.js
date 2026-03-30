@@ -207,6 +207,14 @@ const updateUi = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogOutTimer = function () {
+  let time = 100;
+  setInterval(function () {
+    labelTimer.textContent = time;
+    time--;
+  }, 1000);
+};
+
 // Event handler
 let currentAccount;
 
