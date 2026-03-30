@@ -138,13 +138,17 @@ const displayMovements = function (acc, sort = false) {
     } else if (daysPassed <= 7) {
       displayDate = `${daysPassed} days ago`;
     } else {
-      const day = `${movementDate.getDate()}`.padStart(2, '0');
-      const month = `${movementDate.getMonth() + 1}`.padStart(2, '0');
-      const year = movementDate.getFullYear();
-      displayDate = `${day}/${month}/${year}`;
+      // const day = `${movementDate.getDate()}`.padStart(2, '0');
+      // const month = `${movementDate.getMonth() + 1}`.padStart(2, '0');
+      // const year = movementDate.getFullYear();
+      // displayDate = `${day}/${month}/${year}`;
+      displayDate = new Intl.DateTimeFormat(acc.locale).format(movementDate);
     }
 
-    const formattedMov = formatCur(movement, acc.locale, acc.currency);
+    const formattedMov = new Intl.NumberFormat(acc.locale, {
+      style: 'currency',
+      currency: acc.currency,
+    }).format(movement);
 
     const html = `
     <div class="movements__row">
@@ -163,25 +167,25 @@ const displayMovements = function (acc, sort = false) {
 
 const calcPrintBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)} EUR`;
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)} EUR`;
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)} EUR`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
 
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(mov => (mov * acc.interestRate) / 100)
     .filter(int => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)} EUR`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
 };
 //calcDisplaySummary(account1.movements);
 
